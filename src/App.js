@@ -1,75 +1,78 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import './App.css';
 
-import NewCharacterForm from './components/NewCharacterForm/NewCharacterForm';
-import Button from './components/Button/Button';
+// import NewCharacterForm from './components/NewCharacterForm/NewCharacterForm';
+// import Button from './components/Button/Button';
 import Header from './components/Header/Header';
-import ItemSummary from './components/ItemSummary/ItemSummary';
+// import ItemSummary from './components/ItemSummary/ItemSummary';
+import routes from './routes';
 
 class App extends Component {
-  state = {
-    character: null,
-    characterIndex: -1,
-    makeNewCharacter: false,
-    characters: [],
-    // planets: [],
-  };
+  // state = {
+  //   character: null,
+  //   characterIndex: -1,
+  //   makeNewCharacter: false,
+  //   characters: [],
+  //   // planets: [],
+  // };
   
-  componentWillMount() {
-    axios.get('http://localhost:3002/characters?search=')
-      .then(response => {
-        this.setState({
-          characters: [
-            ...response.data,
-          ],
-        })
-      })
-      .catch(err => console.warn(err));
+  // componentWillMount() {
+  //   axios.get('http://localhost:3002/characters?search=')
+  //     .then(response => {
+  //       this.setState({
+  //         characters: [
+  //           ...response.data,
+  //         ],
+  //       })
+  //     })
+  //     .catch(err => console.warn(err));
     
-  }
+  // }
   
   render() {
-    const characterList = this.state.characters
-      .map((c, i) => (
+    // const characterList = this.state.characters
+    //   .map((c, i) => (
         
-        <ItemSummary 
-            name = {c.name}  
-            title = {c.title}
-            affilliation= {c.affilliation}
-            homePlanet= {c.homePlanet}
-            key={`items-${i}`}
-            clickItem={() => this.editCharacter(c, i)}
-            removeItem= {e => {e.stopPropagation() ; this.deleteCharacter(i)}}
-        />
+    //     <ItemSummary 
+    //         name = {c.name}  
+    //         title = {c.title}
+    //         affilliation= {c.affilliation}
+    //         homePlanet= {c.homePlanet}
+    //         key={`items-${i}`}
+    //         clickItem={() => this.editCharacter(c, i)}
+    //         removeItem= {e => {e.stopPropagation() ; this.deleteCharacter(i)}}
+    //     />
         
-      ));
+    //   ));
       
     // const planetList = this.state.planets.map((p, i)=> (
     //   <li key={`planets-${i}`}>{ p.name } | { p.population }</li>
     // ));
     
-    const newCharacterForm = (this.state.makeNewCharacter || this.state.character) &&
-        <NewCharacterForm
-            title={this.state.character ? '' : ''}
-            character={this.state.character || {}}
-            onSubmit={
-              this.state.character ?
-                (e, update) => this.updateCharacter(e, update) :
-                (e, nc) => this.handleSubmit(e, nc)
-            }
-            onCancel={
-              () => this.state.character ? 
-                this.cancelUpdateCharacter() :
-                this.hideNewCharacterForm()
-            } />;
+    // const newCharacterForm = (this.state.makeNewCharacter || this.state.character) &&
+    //     <NewCharacterForm
+    //         title={this.state.character ? '' : ''}
+    //         character={this.state.character || {}}
+    //         onSubmit={
+    //           this.state.character ?
+    //             (e, update) => this.updateCharacter(e, update) :
+    //             (e, nc) => this.handleSubmit(e, nc)
+    //         }
+    //         onCancel={
+    //           () => this.state.character ? 
+    //             this.cancelUpdateCharacter() :
+    //             this.hideNewCharacterForm()
+    //         } />;
     
     return (
       <div className="App">
       
         <Header></Header>
-        
-        <form onSubmit={e => this.filterCharacters(e)}>
+        <br />
+        { routes }
+
+        {/* <form onSubmit={e => this.filterCharacters(e)}>
           <input ref="query" name="search" />
           
           <Button type="submit">Submit</Button>
@@ -89,96 +92,96 @@ class App extends Component {
             <ul className="item-list">
               {characterList}
             </ul>
-        }
+        } */}
       </div>
     );
   }
   
-  handleSubmit(e, newCharacter) {
-    e.preventDefault();
+  // handleSubmit(e, newCharacter) {
+  //   e.preventDefault();
     
-    return axios.post('/characters', newCharacter)
-      .then(response => {
-        const characters = [
-          ...this.state.characters,
-          response.data,
-        ];
+  //   return axios.post('/characters', newCharacter)
+  //     .then(response => {
+  //       const characters = [
+  //         ...this.state.characters,
+  //         response.data,
+  //       ];
         
-        this.setState({
-          characters,
-          makeNewCharacter: false,
-        });
-      })
-      .catch(err => {
-        console.warn('character couldn\'t be added');
-        console.info(err);
-        throw err;
-      });
-  }
+  //       this.setState({
+  //         characters,
+  //         makeNewCharacter: false,
+  //       });
+  //     })
+  //     .catch(err => {
+  //       console.warn('character couldn\'t be added');
+  //       console.info(err);
+  //       throw err;
+  //     });
+  // }
   
-  showNewCharacterForm() {
-    this.setState({
-      makeNewCharacter: true,
-    });
-  }
+  // showNewCharacterForm() {
+  //   this.setState({
+  //     makeNewCharacter: true,
+  //   });
+  // }
   
-  hideNewCharacterForm() {
-    this.setState({
-      makeNewCharacter: false,
-    });
-  }
+  // hideNewCharacterForm() {
+  //   this.setState({
+  //     makeNewCharacter: false,
+  //   });
+  // }
   
-  editCharacter(character, index) {
-    this.setState({
-      character,
-      characterIndex: index,
-    });
-  }
+  // editCharacter(character, index) {
+  //   this.setState({
+  //     character,
+  //     characterIndex: index,
+  //   });
+  // }
   
-  cancelUpdateCharacter() {
-    this.setState({
-      character: null,
-      characterIndex: -1,
-    });
-  }
+  // cancelUpdateCharacter() {
+  //   this.setState({
+  //     character: null,
+  //     characterIndex: -1,
+  //   });
+  // }
   
-  updateCharacter(e, character) {
-    return axios.patch('/characters/' + this.state.characterIndex, character)
-      .then(response => {
-        const characters = this.state.characters.slice();
+  // updateCharacter(e, character) {
+  //   return axios.patch('/characters/' + this.state.characterIndex, character)
+  //     .then(response => {
+  //       const characters = this.state.characters.slice();
         
-        characters[this.state.characterIndex] = response.data;
+  //       characters[this.state.characterIndex] = response.data;
         
-        this.setState({
-          character: null,
-          characterIndex: -1,
-          characters,
-        });
-      })
-  }
+  //       this.setState({
+  //         character: null,
+  //         characterIndex: -1,
+  //         characters,
+  //       });
+  //     })
+  // }
   
-  deleteCharacter(index) {
-    axios.delete('/characters/' + index)
-      .then(() => {
-        this.setState({
-          characters: this.state.characters.filter((c, i) => i != index),
-        });
-      });
-  }
+  // deleteCharacter(index) {
+  //   axios.delete('/characters/' + index)
+  //     .then(() => {
+  //       this.setState({
+  //         characters: this.state.characters.filter((c, i) => i != index),
+  //       });
+  //     });
+  // }
   
-  filterCharacters(e) {
-    e.preventDefault();
+  // filterCharacters(e) {
+  //   e.preventDefault();
     
-    axios.get(`/characters?search=${this.refs.query.value}`)
-      .then(response => {
-        this.setState({
-          characters: response.data,
-        });
-      })
-      .catch(err => {
-        console.info(err);
-      });
-  }
+  //   axios.get(`/characters?search=${this.refs.query.value}`)
+  //     .then(response => {
+  //       this.setState({
+  //         characters: response.data,
+  //       });
+  //     })
+  //     .catch(err => {
+  //       console.info(err);
+  //     });
+  // }
 }
 
 export default App;

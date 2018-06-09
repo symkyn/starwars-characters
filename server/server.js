@@ -23,6 +23,15 @@ const characters = [
     },
 ];
 
+const user = {
+    name: 'Simon Blake',
+    userName: 'symkyn',
+    imageURL: 'https://cf.geekdo-images.com/medium/img/z5IAbtNAO5Fu175pttC-mFWaidQ=/fit-in/500x500/filters:no_upscale()/pic3469216.jpg',
+    phoneNumber: '801-368-5484',
+    email: 'everett.blake@gmail.com',
+    about: 'I like board games'
+}
+
 // app.use((req, res, next) => {
 //     res.header('Access-Control-Allow-Origin', '*');
     
@@ -33,7 +42,15 @@ app.use(bodyParser.json());
 
 app.use(express.static(__dirname + '/../build'));
 
+app.get('/user', (req,res) => {
+    res.send(user);
+});
 
+app.patch('/user/url', (req,res) => {
+    console.log(req);
+    user.imageURL = req.body.imageURL;
+    res.send(user);
+})
 
 app.get('/characters', (req, res) => {
     const characterList = characters.filter(character => {
